@@ -59,8 +59,8 @@ export default function Home() {
         <motion.div
           className="absolute"
           style={{
-            width: "min(88vw, 440px)",
-            height: "calc(min(88vw, 440px) / 0.72)",
+            width: "min(86vw, 400px)",
+            height: "min(calc(min(86vw, 400px) / 0.72), 70vh)",
             zIndex: 10,
           }}
           initial={false}
@@ -129,7 +129,7 @@ export default function Home() {
         {isOpen && (
           <motion.div
             key="controls"
-            className="z-10 mt-7 flex flex-wrap items-center justify-center gap-3"
+            className="fixed inset-x-0 bottom-0 z-40 flex flex-wrap items-center justify-center gap-3 bg-gradient-to-t from-[#f4efe4] via-[#f4efe4]/90 to-transparent px-4 pb-6 pt-12"
             initial={{ opacity: 0, y: 14 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: 14 }}
@@ -187,9 +187,9 @@ function Petals() {
             width: p.size,
             height: p.size,
             background:
-              "radial-gradient(circle, rgba(255,235,255,0.55), rgba(216,203,176,0.12) 70%, transparent)",
+              "radial-gradient(circle, rgba(216,203,176,0.35), rgba(216,203,176,0.08) 65%, transparent)",
           }}
-          animate={{ y: [0, -16, 0], opacity: [0.5, 0.8, 0.5] }}
+          animate={{ y: [0, -16, 0], opacity: [0.35, 0.55, 0.35] }}
           transition={{
             duration: 9,
             repeat: Infinity,

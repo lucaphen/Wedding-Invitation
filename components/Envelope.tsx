@@ -29,7 +29,10 @@ export default function Envelope({
   return (
     <div
       className="perspective-1200 h-full w-full"
-      style={{ filter: "drop-shadow(0 22px 38px rgba(75,55,35,0.28))" }}
+      style={{
+        filter:
+          "drop-shadow(0 26px 30px rgba(70,52,30,0.35)) drop-shadow(0 6px 10px rgba(70,52,30,0.25))",
+      }}
     >
       <motion.div
         className="preserve-3d relative h-full w-full"
@@ -41,9 +44,23 @@ export default function Envelope({
           type="button"
           aria-label="Virar o envelope"
           onClick={onFlip}
-          className="backface-hidden texture-linen absolute inset-0 grid place-items-center rounded-[6px] cursor-pointer focus:outline-none"
+          className="backface-hidden texture-linen absolute inset-0 grid place-items-center overflow-hidden rounded-[6px] cursor-pointer focus:outline-none"
           style={{ background: linenBody }}
         >
+          {/* woven-linen grain */}
+          <span
+            aria-hidden
+            className="texture-noise pointer-events-none absolute inset-0 opacity-[0.12] mix-blend-multiply"
+          />
+          {/* edge vignette for paper depth */}
+          <span
+            aria-hidden
+            className="pointer-events-none absolute inset-0"
+            style={{
+              boxShadow:
+                "inset 0 0 36px rgba(120,98,66,0.32), inset 0 2px 2px rgba(255,255,255,0.45)",
+            }}
+          />
           {/* embossed inner frame */}
           <span
             aria-hidden
@@ -105,6 +122,30 @@ export default function Envelope({
               boxShadow: "inset 0 0 24px rgba(120,98,66,0.18)",
             }}
           />
+          {/* soft shadow cast where the flap overlaps the pocket */}
+          <span
+            aria-hidden
+            className="absolute inset-0 pointer-events-none z-10"
+            style={{
+              clipPath: "polygon(0% 0%, 100% 0%, 50% 60%)",
+              background:
+                "linear-gradient(180deg, transparent 60%, rgba(90,70,44,0.28) 100%)",
+            }}
+          />
+          {/* woven-linen grain over the whole back */}
+          <span
+            aria-hidden
+            className="texture-noise pointer-events-none absolute inset-0 z-10 opacity-[0.12] mix-blend-multiply"
+          />
+          {/* edge vignette */}
+          <span
+            aria-hidden
+            className="pointer-events-none absolute inset-0 z-10"
+            style={{
+              boxShadow:
+                "inset 0 0 40px rgba(120,98,66,0.34), inset 0 2px 2px rgba(255,255,255,0.4)",
+            }}
+          />
 
           {/* top flap — lifts open */}
           <motion.div
@@ -120,8 +161,24 @@ export default function Envelope({
               style={{
                 clipPath: "polygon(0% 0%, 100% 0%, 50% 56%)",
                 background:
-                  "linear-gradient(180deg, #E4DAC2 0%, #D2C4A4 100%)",
-                boxShadow: "inset 0 -10px 18px rgba(120,98,66,0.22)",
+                  "linear-gradient(168deg, #EADFC6 0%, #DCCEAE 55%, #CDBE9C 100%)",
+                boxShadow: "inset 0 -12px 22px rgba(120,98,66,0.28)",
+              }}
+            />
+            {/* grain on the flap */}
+            <span
+              aria-hidden
+              className="texture-noise backface-hidden absolute inset-0 opacity-[0.12] mix-blend-multiply"
+              style={{ clipPath: "polygon(0% 0%, 100% 0%, 50% 56%)" }}
+            />
+            {/* subtle highlight along the folded edges */}
+            <span
+              aria-hidden
+              className="backface-hidden absolute inset-0"
+              style={{
+                clipPath:
+                  "polygon(0% 0%, 1.5% 0.6%, 50% 53%, 98.5% 0.6%, 100% 0%, 50% 56%)",
+                background: "rgba(255,255,255,0.35)",
               }}
             />
             {/* back side of the flap, seen once it is lifted */}
