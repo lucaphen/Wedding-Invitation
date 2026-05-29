@@ -3,6 +3,7 @@
 import { AnimatePresence, motion } from "framer-motion";
 import { useEffect } from "react";
 import { wedding } from "@/lib/content";
+import { withBasePath } from "@/lib/basePath";
 
 type MapModalProps = {
   open: boolean;
@@ -69,7 +70,7 @@ export default function MapModal({ open, onClose }: MapModalProps) {
             <div className="mx-6 my-4 overflow-hidden rounded-xl border border-blush/25 bg-burgundy-dark">
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img
-                src={map.image}
+                src={withBasePath(map.image)}
                 alt={map.caption}
                 className="h-auto w-full object-contain"
               />

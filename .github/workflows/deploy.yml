@@ -1,0 +1,50 @@
+name: Deploy to GitHub Pages
+
+# Builds the static export and publishes it to the `gh-pages` branch.
+# After the first successful run, enable Pages in repo Settings → Pages →
+# Source: "Deploy from a branch" → Branch: gh-pages / (root).
+on:
+  push:
+    branches:
+      - main
+      - claude/wedding-invitation-webpage-nBUSO
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: pages-deploy
+  cancel-in-progress: true
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build static export
+        run: npm run build
+        env:
+          # Project sites are served from /<repo>/ — prefix assets accordingly
+          NEXT_PUBLIC_BASE_PATH: /${{ github.event.repository.name }}
+
+      - name: Disable Jekyll (so _next assets are served)
+        run: touch out/.nojekyll
+
+      - name: Deploy to gh-pages
+        uses: JamesIves/github-pages-deploy-action@v4
+        with:
+          folder: out
+          branch: gh-pages
+          clean: true
