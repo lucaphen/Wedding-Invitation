@@ -1,0 +1,100 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  color-scheme: light;
+}
+
+html,
+body {
+  height: 100%;
+}
+
+body {
+  margin: 0;
+  min-height: 100dvh;
+  color: #3b2f23;
+  /* Warm paper-cream backdrop with a soft floral wash */
+  background-color: #f4efe4;
+  background-image:
+    radial-gradient(
+      1200px 800px at 15% -10%,
+      rgba(214, 200, 170, 0.45),
+      transparent 60%
+    ),
+    radial-gradient(
+      1000px 700px at 110% 115%,
+      rgba(158, 0, 0, 0.06),
+      transparent 55%
+    ),
+    radial-gradient(
+      900px 700px at 100% 0%,
+      rgba(230, 215, 185, 0.4),
+      transparent 60%
+    );
+  background-attachment: fixed;
+}
+
+@layer utilities {
+  /* 3D helpers for the envelope / card flips */
+  .preserve-3d {
+    transform-style: preserve-3d;
+  }
+  .backface-hidden {
+    -webkit-backface-visibility: hidden;
+    backface-visibility: hidden;
+  }
+  .perspective-1200 {
+    perspective: 1200px;
+  }
+  .perspective-2000 {
+    perspective: 2000px;
+  }
+
+  /* Subtle woven-linen texture for the beige envelope */
+  .texture-linen {
+    background-image:
+      linear-gradient(
+        135deg,
+        rgba(255, 255, 255, 0.12) 0%,
+        rgba(0, 0, 0, 0.04) 100%
+      ),
+      repeating-linear-gradient(
+        0deg,
+        rgba(0, 0, 0, 0.035) 0px,
+        rgba(0, 0, 0, 0.035) 1px,
+        transparent 1px,
+        transparent 3px
+      ),
+      repeating-linear-gradient(
+        90deg,
+        rgba(0, 0, 0, 0.035) 0px,
+        rgba(0, 0, 0, 0.035) 1px,
+        transparent 1px,
+        transparent 3px
+      );
+  }
+
+  /* Faint paper grain for the burgundy card */
+  .texture-paper {
+    background-image: repeating-linear-gradient(
+      0deg,
+      rgba(255, 255, 255, 0.025) 0px,
+      rgba(255, 255, 255, 0.025) 1px,
+      transparent 1px,
+      transparent 4px
+    );
+  }
+}
+
+/* Respect users who prefer reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+  }
+}

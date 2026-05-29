@@ -1,0 +1,42 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 400" width="640" height="400" role="img" aria-label="Mapa do percurso">
+  <rect width="640" height="400" fill="#9E0000"/>
+  <g fill="none" stroke="#FFEBFF" stroke-opacity="0.85" stroke-width="1.4">
+    <!-- decorative road grid -->
+    <path d="M0 120 H640" stroke-opacity="0.18"/>
+    <path d="M0 210 H640" stroke-opacity="0.18"/>
+    <path d="M0 300 H640" stroke-opacity="0.18"/>
+    <path d="M180 0 V400" stroke-opacity="0.18"/>
+    <path d="M380 0 V400" stroke-opacity="0.18"/>
+    <path d="M520 0 V400" stroke-opacity="0.18"/>
+  </g>
+
+  <!-- route -->
+  <path d="M110 170 H210 L210 250 H360 L360 300 H540"
+        fill="none" stroke="#FFEBFF" stroke-width="2.4"
+        stroke-dasharray="2 7" stroke-linecap="round"/>
+
+  <!-- start: Quinta da Grilla -->
+  <g fill="#FFEBFF" stroke="#FFEBFF">
+    <path d="M70 150 l40 -22 l40 22 v34 h-80 z" fill="none" stroke-width="2"/>
+    <line x1="70" y1="184" x2="150" y2="184" stroke-width="2"/>
+  </g>
+  <text x="110" y="210" fill="#FFEBFF" font-family="Georgia, serif" font-size="13" text-anchor="middle" letter-spacing="1">QUINTA DA GRILLA</text>
+
+  <!-- end: Basílica -->
+  <g fill="none" stroke="#FFEBFF" stroke-width="2">
+    <path d="M512 300 v-46 h56 v46"/>
+    <path d="M520 254 l20 -18 l20 18"/>
+    <line x1="540" y1="236" x2="540" y2="220"/>
+    <line x1="532" y1="228" x2="548" y2="228"/>
+  </g>
+  <text x="540" y="330" fill="#FFEBFF" font-family="Georgia, serif" font-size="13" text-anchor="middle" letter-spacing="1">BASÍLICA</text>
+  <text x="540" y="348" fill="#FFEBFF" font-family="Georgia, serif" font-size="13" text-anchor="middle" letter-spacing="1">DE STA. QUITÉRIA</text>
+
+  <!-- road labels -->
+  <text x="218" y="245" fill="#FFEBFF" font-family="Georgia, serif" font-size="11" opacity="0.85">N9</text>
+  <text x="368" y="290" fill="#FFEBFF" font-family="Georgia, serif" font-size="11" opacity="0.85">N115</text>
+
+  <!-- title -->
+  <text x="40" y="56" fill="#FFEBFF" font-family="Georgia, serif" font-style="italic" font-size="34">Mapa</text>
+  <text x="40" y="78" fill="#FFEBFF" font-family="Georgia, serif" font-size="11" opacity="0.7" letter-spacing="2">IMAGEM PROVISÓRIA — SUBSTITUIR</text>
+</svg>
