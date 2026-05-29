@@ -22,6 +22,15 @@ export const wedding = {
     hintOpen: "Clique para abrir",
   },
 
+  // Envelope fotográfico (verso selado). Se `photo` for null, usa-se o
+  // envelope desenhado em SVG. As percentagens definem a geometria da aba.
+  envelope: {
+    photo: "/envelope.jpg",
+    aspect: 1396 / 1127, // proporção real da fotografia
+    flapTip: 70, // % da altura onde termina a ponta da aba (abaixo do selo)
+    seal: { x: 49, y: 54, size: 20 }, // alvo de clique do selo (% da caixa)
+  },
+
   // Cartão — frente (o convite formal)
   invite: {
     overline: "Com imenso carinho, convidamos",

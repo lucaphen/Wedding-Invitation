@@ -1,8 +1,10 @@
 "use client";
 
+import { useState } from "react";
 import { motion } from "framer-motion";
 import WaxSeal from "./WaxSeal";
 import { wedding } from "@/lib/content";
+import { withBasePath } from "@/lib/basePath";
 
 type EnvelopeProps = {
   flipped: boolean;
@@ -12,20 +14,24 @@ type EnvelopeProps = {
 };
 
 // Ivory linen tones (matched to the reference photo)
-const BASE = "#e7dcc9";
+const BASE = "#e9dfcd";
 const BASE_DARK = "#d9cdb6";
 const BASE_DEEP = "#cabd9f";
 
+const { envelope } = wedding;
+const T = envelope.flapTip; // flap-tip depth (%)
+const FLAP_CLIP = `polygon(0% 0%, 100% 0%, 50% ${T}%)`;
+const POCKET_CLIP = `polygon(0% 0%, 50% ${T}%, 100% 0%, 100% 100%, 0% 100%)`;
+
 /**
- * Shared SVG filter/gradient definitions. The linen filter uses a turbulence
- * bump map lit by diffuse + specular distant lights, then tinted by the base
- * fill — so the woven fibres genuinely catch the light.
+ * Shared SVG filter/gradient definitions for the procedural (fallback)
+ * envelope. The linen filter lights a turbulence bump map with diffuse +
+ * specular distant lights, tinted by the base fill — so fibres catch light.
  */
 function EnvelopeDefs() {
   return (
     <svg width="0" height="0" aria-hidden className="absolute">
       <defs>
-        {/* photoreal woven-linen surface */}
         <filter id="linen" x="-2%" y="-2%" width="104%" height="104%">
           <feTurbulence
             type="fractalNoise"
@@ -39,7 +45,7 @@ function EnvelopeDefs() {
             in="noise"
             surfaceScale="3.2"
             diffuseConstant="1.05"
-            lightingColor="#f3ead4"
+            lightingColor="#f5ecd7"
             result="diffuse"
           >
             <feDistantLight azimuth="235" elevation="58" />
@@ -54,7 +60,6 @@ function EnvelopeDefs() {
           >
             <feDistantLight azimuth="235" elevation="58" />
           </feSpecularLighting>
-          {/* tint the lit texture by the base fill colour (multiply) */}
           <feComposite
             in="diffuse"
             in2="SourceGraphic"
@@ -65,9 +70,7 @@ function EnvelopeDefs() {
             k4="0"
             result="lit"
           />
-          {/* clip specular to the shape so no halo leaks outside */}
           <feComposite in="spec" in2="lit" operator="in" result="specClip" />
-          {/* add the clipped specular highlights on top */}
           <feComposite
             in="specClip"
             in2="lit"
@@ -78,8 +81,6 @@ function EnvelopeDefs() {
             k4="0"
           />
         </filter>
-
-        {/* soft cast shadow for the flap */}
         <filter id="flapShadow" x="-30%" y="-30%" width="160%" height="200%">
           <feDropShadow
             dx="0"
@@ -89,20 +90,14 @@ function EnvelopeDefs() {
             floodOpacity="0.4"
           />
         </filter>
-
-        {/* blur for seam ambient-occlusion */}
         <filter id="seamBlur" x="-20%" y="-20%" width="140%" height="140%">
           <feGaussianBlur stdDeviation="6" />
         </filter>
-
-        {/* gentle form light (centre highlight) */}
         <radialGradient id="formLight" cx="42%" cy="34%" r="75%">
           <stop offset="0%" stopColor="#fffaf0" stopOpacity="0.5" />
           <stop offset="55%" stopColor="#fffaf0" stopOpacity="0.08" />
           <stop offset="100%" stopColor="#fffaf0" stopOpacity="0" />
         </radialGradient>
-
-        {/* edge vignette */}
         <radialGradient id="vignette" cx="50%" cy="50%" r="62%">
           <stop offset="62%" stopColor="#000000" stopOpacity="0" />
           <stop offset="100%" stopColor="#5a4427" stopOpacity="0.34" />
@@ -119,13 +114,16 @@ export default function Envelope({
   onOpen,
 }: EnvelopeProps) {
   const { initials } = wedding;
+  const [photoFailed, setPhotoFailed] = useState(false);
+  const usePhoto = Boolean(envelope.photo) && !photoFailed;
+  const photoSrc = envelope.photo ? withBasePath(envelope.photo) : "";
 
   return (
     <div
       className="perspective-1200 h-full w-full"
       style={{
         filter:
-          "drop-shadow(0 30px 34px rgba(64,46,24,0.4)) drop-shadow(0 8px 12px rgba(64,46,24,0.28))",
+          "drop-shadow(0 30px 34px rgba(64,46,24,0.38)) drop-shadow(0 8px 12px rgba(64,46,24,0.26))",
       }}
     >
       <EnvelopeDefs />
@@ -135,7 +133,7 @@ export default function Envelope({
         animate={{ rotateY: flipped ? 180 : 0 }}
         transition={{ type: "spring", stiffness: 90, damping: 16 }}
       >
-        {/* ---------- FRONT FACE: monogram ---------- */}
+        {/* ---------- FRONT FACE: ivory field + monogram ---------- */}
         <button
           type="button"
           aria-label="Virar o envelope"
@@ -150,7 +148,6 @@ export default function Envelope({
             <rect width="1450" height="1000" fill={BASE} filter="url(#linen)" />
             <rect width="1450" height="1000" fill="url(#formLight)" />
             <rect width="1450" height="1000" fill="url(#vignette)" />
-            {/* embossed inner frame */}
             <rect
               x="96"
               y="86"
@@ -159,7 +156,7 @@ export default function Envelope({
               rx="6"
               fill="none"
               stroke="#5a4427"
-              strokeOpacity="0.28"
+              strokeOpacity="0.26"
               strokeWidth="2"
             />
             <rect
@@ -181,7 +178,7 @@ export default function Envelope({
           </span>
         </button>
 
-        {/* ---------- BACK FACE: flaps + wax seal ---------- */}
+        {/* ---------- BACK FACE: sealed side ---------- */}
         <div
           className="backface-hidden absolute inset-0 overflow-hidden rounded-[10px]"
           style={{ transform: "rotateY(180deg)" }}
@@ -195,142 +192,156 @@ export default function Envelope({
             tabIndex={-1}
           />
 
-          {/* pocket: body + folded side/bottom flaps + seams */}
-          <svg
-            viewBox="0 0 1450 1000"
-            preserveAspectRatio="none"
-            className="pointer-events-none absolute inset-0 z-10 h-full w-full"
-          >
-            {/* base fill behind everything */}
-            <rect width="1450" height="1000" fill={BASE_DARK} filter="url(#linen)" />
-
-            {/* left fold */}
-            <path d="M0 0 L725 500 L0 1000 Z" fill={BASE} filter="url(#linen)" />
-            {/* right fold */}
-            <path
-              d="M1450 0 L725 500 L1450 1000 Z"
-              fill={BASE}
-              filter="url(#linen)"
+          {usePhoto ? (
+            <PhotoBack
+              src={photoSrc}
+              opened={opened}
+              onOpen={onOpen}
+              onError={() => setPhotoFailed(true)}
             />
-            {/* bottom fold (front of pocket) */}
-            <path
-              d="M0 1000 L725 470 L1450 1000 Z"
-              fill={BASE_DEEP}
-              filter="url(#linen)"
-            />
-
-            {/* directional plane shading on the folds */}
-            <path d="M0 0 L725 500 L0 1000 Z" fill="#3a2c16" fillOpacity="0.06" />
-            <path
-              d="M1450 0 L725 500 L1450 1000 Z"
-              fill="#000000"
-              fillOpacity="0.05"
-            />
-            <path
-              d="M0 1000 L725 470 L1450 1000 Z"
-              fill="#3a2c16"
-              fillOpacity="0.1"
-            />
-
-            {/* seam ambient-occlusion lines meeting at the centre */}
-            <g
-              filter="url(#seamBlur)"
-              stroke="#4a3a22"
-              strokeOpacity="0.3"
-              strokeWidth="3"
-              fill="none"
-            >
-              <path d="M0 0 L725 500" />
-              <path d="M1450 0 L725 500" />
-              <path d="M0 1000 L725 470" />
-              <path d="M1450 1000 L725 470" />
-            </g>
-            {/* crisp highlight along the fold ridges */}
-            <g stroke="#fffaf0" strokeOpacity="0.4" strokeWidth="1.2" fill="none">
-              <path d="M0 1000 L725 470 L1450 1000" />
-            </g>
-
-            <rect width="1450" height="1000" fill="url(#vignette)" />
-          </svg>
-
-          {/* top flap — lifts open */}
-          <motion.div
-            className="preserve-3d pointer-events-none absolute inset-0 z-20"
-            style={{ transformOrigin: "top center" }}
-            animate={{ rotateX: opened ? -172 : 0 }}
-            transition={{ type: "spring", stiffness: 120, damping: 18 }}
-          >
-            <svg
-              viewBox="0 0 1450 1000"
-              preserveAspectRatio="none"
-              className="backface-hidden absolute inset-0 h-full w-full"
-              style={{ overflow: "visible" }}
-            >
-              {/* flap shape with its own cast shadow */}
-              <g filter="url(#flapShadow)">
-                <path
-                  d="M0 0 L1450 0 L725 560 Z"
-                  fill={BASE}
-                  filter="url(#linen)"
-                />
-              </g>
-              {/* lighten toward the top edge */}
-              <path
-                d="M0 0 L1450 0 L725 560 Z"
-                fill="#fffaf0"
-                fillOpacity="0.12"
-              />
-              {/* shade toward the tip */}
-              <path
-                d="M0 0 L1450 0 L725 560 Z"
-                fill="url(#flapTipShade)"
-              />
-              {/* crisp highlight on the two folded edges */}
-              <path
-                d="M0 0 L725 560 L1450 0"
-                fill="none"
-                stroke="#fffaf0"
-                strokeOpacity="0.5"
-                strokeWidth="1.4"
-              />
-              <defs>
-                <linearGradient id="flapTipShade" x1="0" y1="0" x2="0" y2="1">
-                  <stop offset="55%" stopColor="#3a2c16" stopOpacity="0" />
-                  <stop offset="100%" stopColor="#3a2c16" stopOpacity="0.22" />
-                </linearGradient>
-              </defs>
-            </svg>
-
-            {/* back side of the flap (seen once lifted) */}
-            <svg
-              viewBox="0 0 1450 1000"
-              preserveAspectRatio="none"
-              className="backface-hidden absolute inset-0 h-full w-full"
-              style={{ transform: "rotateX(180deg)" }}
-            >
-              <path
-                d="M0 0 L1450 0 L725 560 Z"
-                fill={BASE_DARK}
-                filter="url(#linen)"
-              />
-              <path
-                d="M0 0 L1450 0 L725 560 Z"
-                fill="#3a2c16"
-                fillOpacity="0.08"
-              />
-            </svg>
-
-            {/* wax seal at the flap tip — travels with the flap */}
-            <div className="pointer-events-auto absolute left-1/2 top-[50%] z-30 -translate-x-1/2 -translate-y-1/2">
-              <WaxSeal
-                onClick={onOpen}
-                size={120}
-                hint={opened ? undefined : wedding.cover.hintOpen}
-              />
-            </div>
-          </motion.div>
+          ) : (
+            <ProceduralBack opened={opened} onOpen={onOpen} />
+          )}
         </div>
       </motion.div>
     </div>
+  );
+}
+
+/* ---------------- Photographic sealed side ---------------- */
+function PhotoBack({
+  src,
+  opened,
+  onOpen,
+  onError,
+}: {
+  src: string;
+  opened: boolean;
+  onOpen: () => void;
+  onError: () => void;
+}) {
+  const { seal } = envelope;
+  return (
+    <>
+      {/* pocket: the photo minus the top-flap triangle */}
+      {/* eslint-disable-next-line @next/next/no-img-element */}
+      <img
+        src={src}
+        alt="Envelope"
+        onError={onError}
+        draggable={false}
+        className="pointer-events-none absolute inset-0 z-10 h-full w-full object-cover"
+        style={{ clipPath: POCKET_CLIP }}
+      />
+
+      {/* top flap: same photo clipped to the triangle, lifts open */}
+      <motion.div
+        className="preserve-3d pointer-events-none absolute inset-0 z-20"
+        style={{ transformOrigin: "center top" }}
+        animate={{ rotateX: opened ? -162 : 0 }}
+        transition={{ type: "spring", stiffness: 120, damping: 18 }}
+      >
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img
+          src={src}
+          alt=""
+          aria-hidden
+          draggable={false}
+          className="backface-hidden absolute inset-0 h-full w-full object-cover"
+          style={{ clipPath: FLAP_CLIP }}
+        />
+        {/* a touch of shadow on the underside revealed as it opens */}
+        <div
+          aria-hidden
+          className="backface-hidden absolute inset-0 bg-[#cabd9f]"
+          style={{ clipPath: FLAP_CLIP, transform: "rotateX(180deg)" }}
+        />
+
+        {/* invisible click target over the wax seal */}
+        <button
+          type="button"
+          aria-label="Abrir o convite"
+          onClick={onOpen}
+          className="pointer-events-auto absolute -translate-x-1/2 -translate-y-1/2 rounded-full focus:outline-none focus-visible:ring-2 focus-visible:ring-wax-light/70"
+          style={{
+            left: `${seal.x}%`,
+            top: `${seal.y}%`,
+            width: `${seal.size}%`,
+            aspectRatio: "1",
+          }}
+        />
+      </motion.div>
+    </>
+  );
+}
+
+/* ---------------- Procedural (fallback) sealed side ---------------- */
+function ProceduralBack({
+  opened,
+  onOpen,
+}: {
+  opened: boolean;
+  onOpen: () => void;
+}) {
+  return (
+    <>
+      <svg
+        viewBox="0 0 1450 1000"
+        preserveAspectRatio="none"
+        className="pointer-events-none absolute inset-0 z-10 h-full w-full"
+      >
+        <rect width="1450" height="1000" fill={BASE_DARK} filter="url(#linen)" />
+        <path d="M0 0 L725 500 L0 1000 Z" fill={BASE} filter="url(#linen)" />
+        <path d="M1450 0 L725 500 L1450 1000 Z" fill={BASE} filter="url(#linen)" />
+        <path d="M0 1000 L725 470 L1450 1000 Z" fill={BASE_DEEP} filter="url(#linen)" />
+        <path d="M0 0 L725 500 L0 1000 Z" fill="#3a2c16" fillOpacity="0.06" />
+        <path d="M1450 0 L725 500 L1450 1000 Z" fill="#000000" fillOpacity="0.05" />
+        <path d="M0 1000 L725 470 L1450 1000 Z" fill="#3a2c16" fillOpacity="0.1" />
+        <g
+          filter="url(#seamBlur)"
+          stroke="#4a3a22"
+          strokeOpacity="0.3"
+          strokeWidth="3"
+          fill="none"
+        >
+          <path d="M0 0 L725 500" />
+          <path d="M1450 0 L725 500" />
+          <path d="M0 1000 L725 470" />
+          <path d="M1450 1000 L725 470" />
+        </g>
+        <g stroke="#fffaf0" strokeOpacity="0.4" strokeWidth="1.2" fill="none">
+          <path d="M0 1000 L725 470 L1450 1000" />
+        </g>
+        <rect width="1450" height="1000" fill="url(#vignette)" />
+      </svg>
+
+      <motion.div
+        className="preserve-3d pointer-events-none absolute inset-0 z-20"
+        style={{ transformOrigin: "top center" }}
+        animate={{ rotateX: opened ? -172 : 0 }}
+        transition={{ type: "spring", stiffness: 120, damping: 18 }}
+      >
+        <svg
+          viewBox="0 0 1450 1000"
+          preserveAspectRatio="none"
+          className="backface-hidden absolute inset-0 h-full w-full"
+          style={{ overflow: "visible" }}
+        >
+          <g filter="url(#flapShadow)">
+            <path d="M0 0 L1450 0 L725 560 Z" fill={BASE} filter="url(#linen)" />
+          </g>
+          <path d="M0 0 L1450 0 L725 560 Z" fill="#fffaf0" fillOpacity="0.12" />
+          <path d="M0 0 L725 560 L1450 0" fill="none" stroke="#fffaf0" strokeOpacity="0.5" strokeWidth="1.4" />
+        </svg>
+
+        <div className="pointer-events-auto absolute left-1/2 top-[50%] z-30 -translate-x-1/2 -translate-y-1/2">
+          <WaxSeal
+            onClick={onOpen}
+            size={120}
+            hint={opened ? undefined : wedding.cover.hintOpen}
+          />
+        </div>
+      </motion.div>
+    </>
   );
 }

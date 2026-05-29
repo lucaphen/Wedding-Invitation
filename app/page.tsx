@@ -73,7 +73,7 @@ export default function Home() {
             type: "spring",
             stiffness: 70,
             damping: 16,
-            delay: isOpen ? 0.18 : 0,
+            delay: isOpen ? 0.32 : 0,
           }}
         >
           <div
@@ -87,18 +87,18 @@ export default function Home() {
         {/* the envelope */}
         <motion.div
           style={{
-            width: "min(86vw, 440px)",
-            aspectRatio: "1.45",
+            width: "min(88vw, 460px)",
+            aspectRatio: `${wedding.envelope.aspect}`,
             zIndex: 20,
             pointerEvents: isOpen ? "none" : "auto",
           }}
           initial={false}
           animate={
             isOpen
-              ? { opacity: 0, scale: 0.85, y: 40 }
+              ? { opacity: 0, scale: 0.86, y: 46 }
               : { opacity: 1, scale: 1, y: 0 }
           }
-          transition={{ duration: 0.6, delay: isOpen ? 0.5 : 0 }}
+          transition={{ duration: 0.7, delay: isOpen ? 0.75 : 0 }}
         >
           <Envelope
             flipped={flipped}
