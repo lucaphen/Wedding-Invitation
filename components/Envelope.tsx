@@ -115,8 +115,13 @@ export default function Envelope({
 }: EnvelopeProps) {
   const { initials } = wedding;
   const [photoFailed, setPhotoFailed] = useState(false);
+  const [frontPhotoFailed, setFrontPhotoFailed] = useState(false);
   const usePhoto = Boolean(envelope.photo) && !photoFailed;
   const photoSrc = envelope.photo ? withBasePath(envelope.photo) : "";
+  const useFrontPhoto = Boolean(envelope.frontPhoto) && !frontPhotoFailed;
+  const frontPhotoSrc = envelope.frontPhoto
+    ? withBasePath(envelope.frontPhoto)
+    : "";
 
   return (
     <div
@@ -140,42 +145,60 @@ export default function Envelope({
           onClick={onFlip}
           className="backface-hidden absolute inset-0 grid place-items-center overflow-hidden rounded-[10px] cursor-pointer focus:outline-none"
         >
-          <svg
-            viewBox="0 0 1450 1000"
-            preserveAspectRatio="none"
-            className="absolute inset-0 h-full w-full"
-          >
-            <rect width="1450" height="1000" fill={BASE} filter="url(#linen)" />
-            <rect width="1450" height="1000" fill="url(#formLight)" />
-            <rect width="1450" height="1000" fill="url(#vignette)" />
-            <rect
-              x="96"
-              y="86"
-              width="1258"
-              height="828"
-              rx="6"
-              fill="none"
-              stroke="#5a4427"
-              strokeOpacity="0.26"
-              strokeWidth="2"
+          {useFrontPhoto ? (
+            /* eslint-disable-next-line @next/next/no-img-element */
+            <img
+              src={frontPhotoSrc}
+              alt=""
+              className="absolute inset-0 h-full w-full object-cover"
+              draggable={false}
+              onError={() => setFrontPhotoFailed(true)}
             />
-            <rect
-              x="93"
-              y="83"
-              width="1258"
-              height="828"
-              rx="6"
-              fill="none"
-              stroke="#fffaf0"
-              strokeOpacity="0.5"
-              strokeWidth="1.5"
-            />
-          </svg>
-          <span className="relative font-script text-[#6a4a26] leading-none text-[clamp(3rem,16vw,7rem)] flex items-baseline gap-1 drop-shadow-[0_1px_0_rgba(255,250,240,0.5)]">
-            {initials.left}
-            <span className="text-[0.5em] translate-y-[-0.15em]">&amp;</span>
-            {initials.right}
-          </span>
+          ) : (
+            <>
+              <svg
+                viewBox="0 0 1450 1000"
+                preserveAspectRatio="none"
+                className="absolute inset-0 h-full w-full"
+              >
+                <rect
+                  width="1450"
+                  height="1000"
+                  fill={BASE}
+                  filter="url(#linen)"
+                />
+                <rect width="1450" height="1000" fill="url(#formLight)" />
+                <rect width="1450" height="1000" fill="url(#vignette)" />
+                <rect
+                  x="96"
+                  y="86"
+                  width="1258"
+                  height="828"
+                  rx="6"
+                  fill="none"
+                  stroke="#5a4427"
+                  strokeOpacity="0.26"
+                  strokeWidth="2"
+                />
+                <rect
+                  x="93"
+                  y="83"
+                  width="1258"
+                  height="828"
+                  rx="6"
+                  fill="none"
+                  stroke="#fffaf0"
+                  strokeOpacity="0.5"
+                  strokeWidth="1.5"
+                />
+              </svg>
+              <span className="relative font-script text-[#6a4a26] leading-none text-[clamp(3rem,16vw,7rem)] flex items-baseline gap-1 drop-shadow-[0_1px_0_rgba(255,250,240,0.5)]">
+                {initials.left}
+                <span className="text-[0.5em] translate-y-[-0.15em]">&amp;</span>
+                {initials.right}
+              </span>
+            </>
+          )}
         </button>
 
         {/* ---------- BACK FACE: sealed side ---------- */}

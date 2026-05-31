@@ -15,24 +15,13 @@ body {
   margin: 0;
   min-height: 100dvh;
   color: #3b2f23;
-  /* Warm paper-cream backdrop with a soft floral wash */
+  /* Soft floral photo backdrop over a warm paper-cream base.
+     The image URL is set via an inline style in layout.tsx so it picks up
+     the deploy basePath (CSS url() is not auto-prefixed). */
   background-color: #f4efe4;
-  background-image:
-    radial-gradient(
-      1200px 800px at 15% -10%,
-      rgba(214, 200, 170, 0.45),
-      transparent 60%
-    ),
-    radial-gradient(
-      1000px 700px at 110% 115%,
-      rgba(158, 0, 0, 0.06),
-      transparent 55%
-    ),
-    radial-gradient(
-      900px 700px at 100% 0%,
-      rgba(230, 215, 185, 0.4),
-      transparent 60%
-    );
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
   background-attachment: fixed;
 }
 

@@ -22,11 +22,13 @@ export const wedding = {
     hintOpen: "Clique para abrir",
   },
 
-  // Envelope fotográfico (verso selado). Se `photo` for null, usa-se o
-  // envelope desenhado em SVG. As percentagens definem a geometria da aba.
+  // Envelope fotográfico. `frontPhoto` é a frente (monograma); `photo` é o
+  // verso selado. Se forem null, usa-se o envelope desenhado em SVG.
+  // As percentagens definem a geometria da aba.
   envelope: {
-    photo: "/envelope.jpg",
-    aspect: 1396 / 1127, // proporção real da fotografia
+    frontPhoto: "/envelope-front.jpg", // frente: linho marfim com o monograma
+    photo: "/envelope-back.jpg", // verso selado
+    aspect: 1205 / 880, // proporção real das fotografias
     flapTip: 70, // % da altura onde termina a ponta da aba (abaixo do selo)
     seal: { x: 49, y: 54, size: 20 }, // alvo de clique do selo (% da caixa)
   },

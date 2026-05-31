@@ -5,6 +5,11 @@
 /.pnp
 .pnp.js
 
+# python
+.venv/
+__pycache__/
+*.pyc
+
 # testing
 /coverage
 
@@ -34,3 +39,4 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+videos/

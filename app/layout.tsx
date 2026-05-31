@@ -1,3 +1,4 @@
+import { withBasePath } from "@/lib/basePath";
 import type { Metadata, Viewport } from "next";
 import { Cormorant_Garamond, Pinyon_Script } from "next/font/google";
 import "./globals.css";
@@ -35,7 +36,12 @@ export default function RootLayout({
 }) {
   return (
     <html lang="pt">
-      <body className={`${serif.variable} ${script.variable} font-serif`}>
+      <body
+        className={`${serif.variable} ${script.variable} font-serif`}
+        style={{
+          backgroundImage: `url("${withBasePath("/backgrounds/IMG_4368.jpg")}")`,
+        }}
+      >
         {children}
       </body>
     </html>
