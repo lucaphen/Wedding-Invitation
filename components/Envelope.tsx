@@ -290,7 +290,7 @@ function PhotoBack({
         type="button"
         aria-label="Abrir o convite"
         onClick={onOpen}
-        className="absolute z-20 -translate-x-1/2 -translate-y-1/2 rounded-full focus:outline-none focus-visible:ring-2 focus-visible:ring-wax-light/70"
+        className="absolute z-20 -translate-x-1/2 -translate-y-1/1.5 rounded-full focus:outline-none focus-visible:ring-2 focus-visible:ring-wax-light/70"
         style={{
           left: `${seal.x}%`,
           top: `${seal.y}%`,
