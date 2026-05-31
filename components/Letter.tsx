@@ -36,33 +36,33 @@ export default function Letter({ face }: LetterProps) {
           />
           <div className="flex h-full w-full flex-col items-center justify-between py-[2%] text-center">
             {/* intertwined monogram */}
-            <div className="flex items-center justify-center font-script font-light leading-none text-[clamp(2rem,10cqw,4rem)] text-blush">
+            <div className="flex items-center justify-center font-script font-light leading-none text-[clamp(2.4rem,12cqw,4rem)] text-blush md:text-[clamp(3rem,9cqw,5.5rem)]">
               <span>{wedding.initials.left}</span>
               <span
                 className="-ml-[0.32em]"
-                style={{ transform: "translate(-13px, 20px)" }}
+                style={{ transform: "translate(-0.21em, 0.33em)" }}
               >
                 {wedding.initials.right}
               </span>
             </div>
 
-            <p className="max-w-[80ch] text-[clamp(0.6rem,2.3cqw,0.95rem)] leading-relaxed text-blush/90">
+            <p className="max-w-[42ch] text-[clamp(0.92rem,4.3cqw,1.15rem)] leading-relaxed text-blush/90 md:max-w-[80ch] md:text-[clamp(1rem,2.2cqw,1.3rem)]">
               {invite.intro}
             </p>
 
             {/* names + date kept together */}
             <div className="flex flex-col items-center gap-[2%]">
-              <h1 className="font-script font-light leading-[0.95] text-[clamp(1.9rem,9.5cqw,3.8rem)]">
+              <h1 className="font-script font-light leading-[0.95] text-[clamp(2.6rem,13cqw,4rem)] md:text-[clamp(3rem,7.5cqw,5.5rem)]">
                 {wedding.bride}
                 <span className="mx-[0.18em] text-[0.62em]">e</span>
                 {wedding.groom}
               </h1>
-              <p className="text-[clamp(0.74rem,2.7cqw,1.1rem)] font-semibold uppercase tracking-[0.18em] text-blush">
+              <p className="text-[clamp(0.85rem,4cqw,1.15rem)] font-semibold uppercase tracking-[0.18em] text-blush md:text-[clamp(0.95rem,2.4cqw,1.35rem)]">
                 {wedding.dateLong}
               </p>
             </div>
 
-            <p className="max-w-[60ch] text-[clamp(0.62rem,2.4cqw,0.98rem)] leading-relaxed text-blush/90">
+            <p className="max-w-[40ch] text-[clamp(0.9rem,4.2cqw,1.1rem)] leading-relaxed text-blush/90 md:max-w-[60ch] md:text-[clamp(1rem,2.2cqw,1.28rem)]">
               {invite.ceremony.pre}
               <strong className="font-semibold text-blush">
                 {invite.ceremony.highlight}
@@ -71,7 +71,7 @@ export default function Letter({ face }: LetterProps) {
             </p>
 
             {/* RSVP deadline note */}
-            <div className=" text-[clamp(0.56rem,2.1cqw,0.88rem)] italic leading-relaxed text-blush/80">
+            <div className="max-w-[44ch] text-[clamp(0.82rem,3.7cqw,1rem)] italic leading-relaxed text-blush/80 md:max-w-none md:text-[clamp(0.9rem,2cqw,1.15rem)]">
               <p>
                 {invite.rsvp.pre}
                 <strong className="font-semibold not-italic text-blush">
@@ -94,19 +94,19 @@ export default function Letter({ face }: LetterProps) {
           />
 
           {/* script title, top-right */}
-          <h2 className="text-right font-script leading-none text-[clamp(1.7rem,6.4cqw,3.2rem)] text-blush">
+          <h2 className="text-right font-script leading-none text-[clamp(2.2rem,9cqw,3.4rem)] text-blush md:text-[clamp(2.6rem,5.5cqw,4.5rem)]">
             {details.title}
           </h2>
 
           {/* RSVP */}
           <section className="mt-[3.2%]">
-            <h3 className="text-[clamp(1rem,3.2cqw,1.6rem)] font-semibold uppercase tracking-[0.22em]">
+            <h3 className="text-[clamp(1.05rem,5cqw,1.6rem)] font-semibold uppercase tracking-[0.22em] md:text-[clamp(1.2rem,2.8cqw,1.9rem)]">
               {rsvp.label}
             </h3>
-            <p className="mt-[1.6%] max-w-[62%] text-[clamp(0.68rem,2.5cqw,1.05rem)] leading-snug text-blush/90">
+            <p className="mt-[1.6%] max-w-[90%] text-[clamp(0.9rem,4.2cqw,1.1rem)] leading-snug text-blush/90 md:max-w-[62%] md:text-[clamp(1rem,2.3cqw,1.3rem)]">
               {rsvp.text}
             </p>
-            <ul className="mt-[2.4%] space-y-0.5 text-[clamp(0.76rem,2.8cqw,1.2rem)] text-blush/95">
+            <ul className="mt-[2.4%] space-y-0.5 text-[clamp(0.95rem,4.6cqw,1.25rem)] text-blush/95 md:text-[clamp(1.05rem,2.6cqw,1.45rem)]">
               {rsvp.contacts.map((c) => (
                 <li key={c.name}>
                   {c.name} -{" "}
@@ -123,17 +123,17 @@ export default function Letter({ face }: LetterProps) {
 
           {/* SITE */}
           <section className="mt-[3.2%]">
-            <h3 className="text-[clamp(1rem,3.2cqw,1.6rem)] font-semibold uppercase tracking-[0.22em]">
+            <h3 className="text-[clamp(1.05rem,5cqw,1.6rem)] font-semibold uppercase tracking-[0.22em] md:text-[clamp(1.2rem,2.8cqw,1.9rem)]">
               {site.label}
             </h3>
-            <p className="mt-[1.6%] max-w-[58%] text-[clamp(0.68rem,2.5cqw,1.05rem)] leading-snug text-blush/90">
+            <p className="mt-[1.6%] max-w-[72%] text-[clamp(0.9rem,4.2cqw,1.1rem)] leading-snug text-blush/90 md:max-w-[58%] md:text-[clamp(1rem,2.3cqw,1.3rem)]">
               {site.text}
             </p>
             <a
               href={site.url}
               target="_blank"
               rel="noopener noreferrer"
-              className="mt-[2.2%] inline-block max-w-[58%] break-all text-[clamp(0.64rem,2.35cqw,1rem)] text-blush/95 underline decoration-blush/40 underline-offset-4 transition hover:decoration-blush"
+              className="mt-[2.2%] inline-block max-w-[72%] break-all text-[clamp(0.82rem,3.8cqw,1rem)] text-blush/95 underline decoration-blush/40 underline-offset-4 transition hover:decoration-blush md:max-w-[58%] md:text-[clamp(0.9rem,2.1cqw,1.2rem)]"
             >
               {site.url}
             </a>

@@ -57,14 +57,11 @@ export default function Home() {
 
       {/* stage: envelope + letter share a centered area */}
       <div className="relative z-10 grid w-full max-w-[620px] place-items-center">
-        {/* the letter sits behind the envelope and rises out as it opens */}
+        {/* the letter sits behind the envelope and rises out as it opens.
+            Mobile: a taller, near-full-width portrait card with larger text.
+            Desktop (md+): a wider landscape card with bigger margins reclaimed. */}
         <motion.div
-          className="absolute"
-          style={{
-            width: "min(94vw, 600px)",
-            aspectRatio: "1060 / 730",
-            zIndex: 10,
-          }}
+          className="absolute z-10 w-[92vw] aspect-[2/3] md:w-[min(92vw,860px)] md:aspect-[1060/730]"
           initial={false}
           animate={
             isOpen

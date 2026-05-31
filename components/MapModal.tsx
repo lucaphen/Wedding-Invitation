@@ -1,9 +1,9 @@
 "use client";
 
+import { withBasePath } from "@/lib/basePath";
+import { wedding } from "@/lib/content";
 import { AnimatePresence, motion } from "framer-motion";
 import { useEffect } from "react";
-import { wedding } from "@/lib/content";
-import { withBasePath } from "@/lib/basePath";
 
 type MapModalProps = {
   open: boolean;
@@ -51,7 +51,7 @@ export default function MapModal({ open, onClose }: MapModalProps) {
             role="dialog"
             aria-modal="true"
             aria-label={map.title}
-            className="relative z-10 w-full max-w-3xl overflow-hidden rounded-2xl bg-burgundy text-blush shadow-2xl"
+            className="relative z-10 w-full max-w-5xl overflow-hidden rounded-2xl bg-[#732030] text-blush shadow-2xl"
             initial={{ scale: 0.9, y: 20, opacity: 0 }}
             animate={{ scale: 1, y: 0, opacity: 1 }}
             exit={{ scale: 0.92, y: 12, opacity: 0 }}
@@ -62,7 +62,7 @@ export default function MapModal({ open, onClose }: MapModalProps) {
               type="button"
               onClick={onClose}
               aria-label={controls.close}
-              className="absolute right-3 top-3 z-10 grid h-9 w-9 place-items-center rounded-full bg-burgundy/80 text-blush backdrop-blur transition hover:bg-blush hover:text-burgundy focus:outline-none focus-visible:ring-2 focus-visible:ring-blush"
+              className="absolute right-3 top-3 z-10 grid h-9 w-9 place-items-center rounded-full bg-[#732030]/80 text-blush backdrop-blur transition hover:bg-blush hover:text-[#732030] focus:outline-none focus-visible:ring-2 focus-visible:ring-blush"
             >
               &#10005;
             </button>
@@ -72,21 +72,21 @@ export default function MapModal({ open, onClose }: MapModalProps) {
             <img
               src={withBasePath(map.image)}
               alt={map.caption}
-              className="block h-auto w-full"
+              className="mx-auto block h-auto w-full max-h-[78dvh] object-contain"
               draggable={false}
             />
 
-            <div className="flex justify-center px-6 pb-6 pt-4">
+            <div className="flex justify-center px-6 pb-5 pt-3">
               <a
                 href={map.googleMapsUrl}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-flex items-center gap-2 rounded-full bg-blush px-5 py-3 text-xs uppercase tracking-[0.2em] text-burgundy transition hover:opacity-90 focus:outline-none focus-visible:ring-2 focus-visible:ring-blush focus-visible:ring-offset-2 focus-visible:ring-offset-burgundy"
+                className="inline-flex items-center gap-1.5 rounded-full bg-blush px-3.5 py-1.5 text-[0.62rem] uppercase tracking-[0.18em] text-[#732030] transition hover:opacity-90 focus:outline-none focus-visible:ring-2 focus-visible:ring-blush focus-visible:ring-offset-2 focus-visible:ring-offset-[#732030]"
               >
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
-                  width="16"
-                  height="16"
+                  width="13"
+                  height="13"
                   viewBox="0 0 24 24"
                   fill="none"
                   stroke="currentColor"

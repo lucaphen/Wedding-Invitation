@@ -19,9 +19,6 @@ const BASE_DARK = "#d9cdb6";
 const BASE_DEEP = "#cabd9f";
 
 const { envelope } = wedding;
-const T = envelope.flapTip; // flap-tip depth (%)
-const FLAP_CLIP = `polygon(0% 0%, 100% 0%, 50% ${T}%)`;
-const POCKET_CLIP = `polygon(0% 0%, 50% ${T}%, 100% 0%, 100% 100%, 0% 100%)`;
 
 /**
  * Shared SVG filter/gradient definitions for the procedural (fallback)
@@ -243,7 +240,8 @@ function PhotoBack({
   const { seal } = envelope;
   return (
     <>
-      {/* pocket: the photo minus the top-flap triangle */}
+      {/* the sealed envelope as a single, seamless photo (no clip-path
+          flap/pocket split — that left faint diagonal lines on the join) */}
       {/* eslint-disable-next-line @next/next/no-img-element */}
       <img
         src={src}
@@ -251,46 +249,21 @@ function PhotoBack({
         onError={onError}
         draggable={false}
         className="pointer-events-none absolute inset-0 z-10 h-full w-full object-cover"
-        style={{ clipPath: POCKET_CLIP }}
       />
 
-      {/* top flap: same photo clipped to the triangle, lifts open */}
-      <motion.div
-        className="preserve-3d pointer-events-none absolute inset-0 z-20"
-        style={{ transformOrigin: "center top" }}
-        animate={{ rotateX: 0 }}
-        transition={{ duration: 0 }}
-      >
-        {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img
-          src={src}
-          alt=""
-          aria-hidden
-          draggable={false}
-          className="backface-hidden absolute inset-0 h-full w-full object-cover"
-          style={{ clipPath: FLAP_CLIP }}
-        />
-        {/* a touch of shadow on the underside revealed as it opens */}
-        <div
-          aria-hidden
-          className="backface-hidden absolute inset-0 bg-[#cabd9f]"
-          style={{ clipPath: FLAP_CLIP, transform: "rotateX(180deg)" }}
-        />
-
-        {/* invisible click target over the wax seal */}
-        <button
-          type="button"
-          aria-label="Abrir o convite"
-          onClick={onOpen}
-          className="pointer-events-auto absolute -translate-x-1/2 -translate-y-1/2 rounded-full focus:outline-none focus-visible:ring-2 focus-visible:ring-wax-light/70"
-          style={{
-            left: `${seal.x}%`,
-            top: `${seal.y}%`,
-            width: `${seal.size}%`,
-            aspectRatio: "1",
-          }}
-        />
-      </motion.div>
+      {/* invisible click target over the wax seal */}
+      <button
+        type="button"
+        aria-label="Abrir o convite"
+        onClick={onOpen}
+        className="absolute z-20 -translate-x-1/2 -translate-y-1/2 rounded-full focus:outline-none focus-visible:ring-2 focus-visible:ring-wax-light/70"
+        style={{
+          left: `${seal.x}%`,
+          top: `${seal.y}%`,
+          width: `${seal.size}%`,
+          aspectRatio: "1",
+        }}
+      />
     </>
   );
 }
