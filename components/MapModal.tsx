@@ -13,14 +13,19 @@ type MapModalProps = {
 export default function MapModal({ open, onClose }: MapModalProps) {
   const { map, controls } = wedding;
 
-  // Close on Escape
+  // Close on Escape + lock body scroll while open
   useEffect(() => {
     if (!open) return;
     const onKey = (e: KeyboardEvent) => {
       if (e.key === "Escape") onClose();
     };
     window.addEventListener("keydown", onKey);
-    return () => window.removeEventListener("keydown", onKey);
+    const { overflow } = document.body.style;
+    document.body.style.overflow = "hidden";
+    return () => {
+      window.removeEventListener("keydown", onKey);
+      document.body.style.overflow = overflow;
+    };
   }, [open, onClose]);
 
   return (
@@ -46,44 +51,53 @@ export default function MapModal({ open, onClose }: MapModalProps) {
             role="dialog"
             aria-modal="true"
             aria-label={map.title}
-            className="relative z-10 w-full max-w-lg overflow-hidden rounded-2xl bg-burgundy text-blush shadow-2xl"
+            className="relative z-10 w-full max-w-3xl overflow-hidden rounded-2xl bg-burgundy text-blush shadow-2xl"
             initial={{ scale: 0.9, y: 20, opacity: 0 }}
             animate={{ scale: 1, y: 0, opacity: 1 }}
             exit={{ scale: 0.92, y: 12, opacity: 0 }}
             transition={{ type: "spring", stiffness: 220, damping: 22 }}
           >
-            <div className="flex items-center justify-between px-6 pt-5">
-              <h3 className="font-script text-3xl leading-none">{map.title}</h3>
-              <button
-                type="button"
-                onClick={onClose}
-                aria-label={controls.close}
-                className="grid h-9 w-9 place-items-center rounded-full border border-blush/40 text-blush transition hover:bg-blush hover:text-burgundy focus:outline-none focus-visible:ring-2 focus-visible:ring-blush"
-              >
-                &#10005;
-              </button>
-            </div>
+            {/* close button, floating over the map */}
+            <button
+              type="button"
+              onClick={onClose}
+              aria-label={controls.close}
+              className="absolute right-3 top-3 z-10 grid h-9 w-9 place-items-center rounded-full bg-burgundy/80 text-blush backdrop-blur transition hover:bg-blush hover:text-burgundy focus:outline-none focus-visible:ring-2 focus-visible:ring-blush"
+            >
+              &#10005;
+            </button>
 
-            <p className="px-6 pt-1 text-sm text-blush/85">{map.caption}</p>
+            {/* the map image */}
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img
+              src={withBasePath(map.image)}
+              alt={map.caption}
+              className="block h-auto w-full"
+              draggable={false}
+            />
 
-            {/* stylized map image (swap /public/map-placeholder.svg later) */}
-            <div className="mx-6 my-4 overflow-hidden rounded-xl border border-blush/25 bg-burgundy-dark">
-              {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img
-                src={withBasePath(map.image)}
-                alt={map.caption}
-                className="h-auto w-full object-contain"
-              />
-            </div>
-
-            <div className="px-6 pb-6">
+            <div className="flex justify-center px-6 pb-6 pt-4">
               <a
                 href={map.googleMapsUrl}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="flex w-full items-center justify-center gap-2 rounded-full bg-blush px-5 py-3 text-sm uppercase tracking-[0.2em] text-burgundy transition hover:opacity-90 focus:outline-none focus-visible:ring-2 focus-visible:ring-blush focus-visible:ring-offset-2 focus-visible:ring-offset-burgundy"
+                className="inline-flex items-center gap-2 rounded-full bg-blush px-5 py-3 text-xs uppercase tracking-[0.2em] text-burgundy transition hover:opacity-90 focus:outline-none focus-visible:ring-2 focus-visible:ring-blush focus-visible:ring-offset-2 focus-visible:ring-offset-burgundy"
               >
-                <span aria-hidden>&#128205;</span>
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="16"
+                  height="16"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  aria-hidden
+                >
+                  <path d="M20 10c0 4.993-5.539 10.193-7.399 11.799a1 1 0 0 1-1.202 0C9.539 20.193 4 14.993 4 10a8 8 0 0 1 16 0" />
+                  <circle cx="12" cy="10" r="3" />
+                </svg>
                 {map.googleMapsLabel}
               </a>
             </div>

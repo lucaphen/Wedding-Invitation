@@ -9,12 +9,15 @@ const config: Config = {
   theme: {
     extend: {
       colors: {
+        // Deep wine + warm cream sampled from the printed cards.
         burgundy: {
-          DEFAULT: "#9E0000",
-          dark: "#7A0000",
-          light: "#B91111",
+          DEFAULT: "#5d1e28",
+          dark: "#471620",
+          light: "#6e2a34",
         },
-        blush: "#FFEBFF",
+        // `blush` kept as the token name used across components; now a warm
+        // cream/ivory ink to match the cards.
+        blush: "#f3ead8",
         linen: {
           DEFAULT: "#D8CBB0",
           light: "#E7DDC6",

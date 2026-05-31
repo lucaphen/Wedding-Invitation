@@ -218,7 +218,6 @@ export default function Envelope({
           {usePhoto ? (
             <PhotoBack
               src={photoSrc}
-              opened={opened}
               onOpen={onOpen}
               onError={() => setPhotoFailed(true)}
             />
@@ -234,12 +233,10 @@ export default function Envelope({
 /* ---------------- Photographic sealed side ---------------- */
 function PhotoBack({
   src,
-  opened,
   onOpen,
   onError,
 }: {
   src: string;
-  opened: boolean;
   onOpen: () => void;
   onError: () => void;
 }) {
@@ -261,8 +258,8 @@ function PhotoBack({
       <motion.div
         className="preserve-3d pointer-events-none absolute inset-0 z-20"
         style={{ transformOrigin: "center top" }}
-        animate={{ rotateX: opened ? -162 : 0 }}
-        transition={{ type: "spring", stiffness: 120, damping: 18 }}
+        animate={{ rotateX: 0 }}
+        transition={{ duration: 0 }}
       >
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <img
@@ -341,8 +338,8 @@ function ProceduralBack({
       <motion.div
         className="preserve-3d pointer-events-none absolute inset-0 z-20"
         style={{ transformOrigin: "top center" }}
-        animate={{ rotateX: opened ? -172 : 0 }}
-        transition={{ type: "spring", stiffness: 120, damping: 18 }}
+        animate={{ rotateX: 0 }}
+        transition={{ duration: 0 }}
       >
         <svg
           viewBox="0 0 1450 1000"

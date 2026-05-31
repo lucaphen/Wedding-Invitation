@@ -26,10 +26,12 @@ export default function Home() {
   };
 
   return (
-    <main className="relative flex min-h-[100dvh] flex-col items-center justify-center overflow-hidden px-4 py-8">
+    <main className="relative flex min-h-[100dvh] flex-col items-center">
       {/* soft floating petals */}
       <Petals />
 
+      {/* ---- hero: envelope + card, centered in the first screen ---- */}
+      <section className="relative flex min-h-[100dvh] w-full flex-col items-center justify-center overflow-hidden px-4 py-8">
       {/* names / overline — visible until the card is open */}
       <AnimatePresence>
         {!isOpen && (
@@ -54,13 +56,13 @@ export default function Home() {
       </AnimatePresence>
 
       {/* stage: envelope + letter share a centered area */}
-      <div className="relative z-10 grid w-full max-w-[480px] place-items-center">
+      <div className="relative z-10 grid w-full max-w-[620px] place-items-center">
         {/* the letter sits behind the envelope and rises out as it opens */}
         <motion.div
           className="absolute"
           style={{
-            width: "min(86vw, 400px)",
-            height: "min(calc(min(86vw, 400px) / 0.72), 70vh)",
+            width: "min(94vw, 600px)",
+            aspectRatio: "1060 / 730",
             zIndex: 10,
           }}
           initial={false}
@@ -71,16 +73,15 @@ export default function Home() {
           }
           transition={{
             type: "spring",
-            stiffness: 70,
-            damping: 16,
-            delay: isOpen ? 0.32 : 0,
+            stiffness: 260,
+            damping: 20,
           }}
         >
           <div
             className="h-full w-full"
             style={{ pointerEvents: isOpen ? "auto" : "none" }}
           >
-            <Letter face={cardFace} onSeeMap={() => setShowMap(true)} />
+            <Letter face={cardFace} />
           </div>
         </motion.div>
 
@@ -98,7 +99,7 @@ export default function Home() {
               ? { opacity: 0, scale: 0.86, y: 46 }
               : { opacity: 1, scale: 1, y: 0 }
           }
-          transition={{ duration: 0.7, delay: isOpen ? 0.75 : 0 }}
+          transition={{ duration: 0.25 }}
         >
           <Envelope
             flipped={flipped}
@@ -109,20 +110,25 @@ export default function Home() {
         </motion.div>
       </div>
 
-      {/* hint to flip while on the front */}
-      <AnimatePresence>
-        {stage === "front" && (
-          <motion.p
-            key="flip-hint"
-            className="z-10 mt-6 text-[0.7rem] uppercase tracking-[0.3em] text-wax-dark/70 animate-soft-pulse"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-          >
-            {wedding.cover.hintFlip}
-          </motion.p>
-        )}
-      </AnimatePresence>
+      {/* hint to flip while on the front — height reserved so toggling it
+          doesn't reflow the vertically-centered column (which would nudge
+          the title as the envelope flips) */}
+      <div className="z-10 mt-6 flex min-h-[1.25rem] items-center justify-center">
+        <AnimatePresence>
+          {stage === "front" && (
+            <motion.p
+              key="flip-hint"
+              className="text-[0.7rem] uppercase tracking-[0.3em] text-wax-dark/70 animate-soft-pulse"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+            >
+              {wedding.cover.hintFlip}
+            </motion.p>
+          )}
+        </AnimatePresence>
+      </div>
+      </section>
 
       {/* controls once the card is open */}
       <AnimatePresence>
@@ -147,8 +153,24 @@ export default function Home() {
             <button
               type="button"
               onClick={() => setShowMap(true)}
-              className="rounded-full border border-burgundy/50 px-5 py-2.5 text-xs uppercase tracking-[0.2em] text-burgundy transition hover:bg-burgundy hover:text-blush focus:outline-none focus-visible:ring-2 focus-visible:ring-burgundy/40"
+              className="inline-flex items-center gap-2 rounded-full border border-burgundy/50 px-5 py-2.5 text-xs uppercase tracking-[0.2em] text-burgundy transition hover:bg-burgundy hover:text-blush focus:outline-none focus-visible:ring-2 focus-visible:ring-burgundy/40"
             >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="16"
+                height="16"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                aria-hidden
+              >
+                <path d="M14.106 5.553a2 2 0 0 0 1.788 0l3.659-1.83A1 1 0 0 1 21 4.619v12.764a1 1 0 0 1-.553.894l-4.553 2.277a2 2 0 0 1-1.788 0l-4.212-2.106a2 2 0 0 0-1.788 0l-3.659 1.83A1 1 0 0 1 3 19.381V6.618a1 1 0 0 1 .553-.894l4.553-2.277a2 2 0 0 1 1.788 0z" />
+                <path d="M15 5.764v15" />
+                <path d="M9 3.236v15" />
+              </svg>
               {wedding.controls.seeMap}
             </button>
             <button
