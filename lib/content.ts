@@ -19,7 +19,7 @@ export const wedding = {
   cover: {
     overline: "VAMOS CASAR",
     hintFlip: "Toque para virar",
-    hintOpen: "Clique para abrir",
+    hintOpen: "Clique aqui para abrir",
   },
 
   // Envelope fotográfico. `frontPhoto` é a frente (monograma); `photo` é o

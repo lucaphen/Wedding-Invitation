@@ -1,10 +1,10 @@
 "use client";
 
-import { useState } from "react";
-import { motion } from "framer-motion";
-import WaxSeal from "./WaxSeal";
-import { wedding } from "@/lib/content";
 import { withBasePath } from "@/lib/basePath";
+import { wedding } from "@/lib/content";
+import { motion } from "framer-motion";
+import { useState } from "react";
+import WaxSeal from "./WaxSeal";
 
 type EnvelopeProps = {
   flipped: boolean;
@@ -191,7 +191,9 @@ export default function Envelope({
               </svg>
               <span className="relative font-script text-[#6a4a26] leading-none text-[clamp(3rem,16vw,7rem)] flex items-baseline gap-1 drop-shadow-[0_1px_0_rgba(255,250,240,0.5)]">
                 {initials.left}
-                <span className="text-[0.5em] translate-y-[-0.15em]">&amp;</span>
+                <span className="text-[0.5em] translate-y-[-0.15em]">
+                  &amp;
+                </span>
                 {initials.right}
               </span>
             </>
@@ -251,6 +253,38 @@ function PhotoBack({
         className="pointer-events-none absolute inset-0 z-10 h-full w-full object-cover"
       />
 
+      {/* small legible hint, curved along the bottom of the wax seal */}
+      <svg
+        viewBox="0 0 220 116"
+        aria-hidden
+        className="animate-soft-pulse pointer-events-none absolute z-20"
+        style={{
+          left: `${seal.x}%`,
+          top: `${seal.y - 1}%`,
+          width: `${seal.size * 2.6}%`,
+          transform: "translateX(-50%)",
+        }}
+      >
+        <defs>
+          <path id="sealHintArc" d="M 28 34 A 82 82 0 0 0 192 34" fill="none" />
+        </defs>
+        <text
+          textAnchor="middle"
+          fill="#5e3f20"
+          style={{
+            fontFamily: "var(--font-serif)",
+            fontSize: "14px",
+            fontWeight: 600,
+            letterSpacing: "1.5px",
+            textTransform: "uppercase",
+          }}
+        >
+          <textPath href="#sealHintArc" startOffset="50%">
+            {wedding.cover.hintOpen}
+          </textPath>
+        </text>
+      </svg>
+
       {/* invisible click target over the wax seal */}
       <button
         type="button"
@@ -283,13 +317,34 @@ function ProceduralBack({
         preserveAspectRatio="none"
         className="pointer-events-none absolute inset-0 z-10 h-full w-full"
       >
-        <rect width="1450" height="1000" fill={BASE_DARK} filter="url(#linen)" />
+        <rect
+          width="1450"
+          height="1000"
+          fill={BASE_DARK}
+          filter="url(#linen)"
+        />
         <path d="M0 0 L725 500 L0 1000 Z" fill={BASE} filter="url(#linen)" />
-        <path d="M1450 0 L725 500 L1450 1000 Z" fill={BASE} filter="url(#linen)" />
-        <path d="M0 1000 L725 470 L1450 1000 Z" fill={BASE_DEEP} filter="url(#linen)" />
+        <path
+          d="M1450 0 L725 500 L1450 1000 Z"
+          fill={BASE}
+          filter="url(#linen)"
+        />
+        <path
+          d="M0 1000 L725 470 L1450 1000 Z"
+          fill={BASE_DEEP}
+          filter="url(#linen)"
+        />
         <path d="M0 0 L725 500 L0 1000 Z" fill="#3a2c16" fillOpacity="0.06" />
-        <path d="M1450 0 L725 500 L1450 1000 Z" fill="#000000" fillOpacity="0.05" />
-        <path d="M0 1000 L725 470 L1450 1000 Z" fill="#3a2c16" fillOpacity="0.1" />
+        <path
+          d="M1450 0 L725 500 L1450 1000 Z"
+          fill="#000000"
+          fillOpacity="0.05"
+        />
+        <path
+          d="M0 1000 L725 470 L1450 1000 Z"
+          fill="#3a2c16"
+          fillOpacity="0.1"
+        />
         <g
           filter="url(#seamBlur)"
           stroke="#4a3a22"
@@ -321,10 +376,20 @@ function ProceduralBack({
           style={{ overflow: "visible" }}
         >
           <g filter="url(#flapShadow)">
-            <path d="M0 0 L1450 0 L725 560 Z" fill={BASE} filter="url(#linen)" />
+            <path
+              d="M0 0 L1450 0 L725 560 Z"
+              fill={BASE}
+              filter="url(#linen)"
+            />
           </g>
           <path d="M0 0 L1450 0 L725 560 Z" fill="#fffaf0" fillOpacity="0.12" />
-          <path d="M0 0 L725 560 L1450 0" fill="none" stroke="#fffaf0" strokeOpacity="0.5" strokeWidth="1.4" />
+          <path
+            d="M0 0 L725 560 L1450 0"
+            fill="none"
+            stroke="#fffaf0"
+            strokeOpacity="0.5"
+            strokeWidth="1.4"
+          />
         </svg>
 
         <div className="pointer-events-auto absolute left-1/2 top-[50%] z-30 -translate-x-1/2 -translate-y-1/2">
