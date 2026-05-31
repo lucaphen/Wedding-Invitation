@@ -129,14 +129,16 @@ export default function Letter({ face }: LetterProps) {
             <p className="mt-[1.6%] max-w-[72%] text-[clamp(0.9rem,4.2cqw,1.1rem)] leading-snug text-blush/90 md:max-w-[58%] md:text-[clamp(1rem,2.3cqw,1.3rem)]">
               {site.text}
             </p>
-            <a
-              href={site.url}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="mt-[2.2%] inline-block max-w-[72%] break-all text-[clamp(0.82rem,3.8cqw,1rem)] text-blush/95 underline decoration-blush/40 underline-offset-4 transition hover:decoration-blush md:max-w-[58%] md:text-[clamp(0.9rem,2.1cqw,1.2rem)]"
-            >
-              {site.url}
-            </a>
+            <strong>
+              <a
+                href={site.url}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="mt-[2.2%] inline-block max-w-[80%] break-all text-[clamp(0.95rem,4.6cqw,1.25rem)] text-blush/95 underline decoration-blush/40 underline-offset-4 transition hover:decoration-blush md:max-w-[58%] md:text-[clamp(1.05rem,2.6cqw,1.45rem)]"
+              >
+                {site.url}
+              </a>
+            </strong>
           </section>
 
           {/* QR code (links to the site) — bottom-right, as on the card */}
