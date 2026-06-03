@@ -10,7 +10,7 @@ import { wedding } from "@/lib/content";
 type Stage = "front" | "back" | "open";
 
 export default function Home() {
-  const [stage, setStage] = useState<Stage>("open");
+  const [stage, setStage] = useState<Stage>("front");
   const [cardFace, setCardFace] = useState<"front" | "back">("back");
   const [showMap, setShowMap] = useState(false);
 
