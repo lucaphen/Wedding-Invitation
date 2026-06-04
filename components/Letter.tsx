@@ -34,16 +34,16 @@ export default function Letter({ face }: LetterProps) {
             aria-hidden
             className="pointer-events-none absolute inset-3 rounded-[7px] border border-blush/25"
           />
-          <div className="flex h-full w-full flex-col items-center justify-between py-[2%] text-center">
-            {/* intertwined monogram */}
-            <div className="flex items-center justify-center font-script font-light leading-none text-[clamp(2.4rem,12cqw,4rem)] text-blush md:text-[clamp(3rem,9cqw,5.5rem)]">
-              <span>{wedding.initials.left}</span>
-              <span
-                className="-ml-[0.32em]"
-                style={{ transform: "translate(-0.21em, 0.33em)" }}
-              >
-                {wedding.initials.right}
-              </span>
+          <div className="flex h-full w-full flex-col items-center justify-between py-[3%] text-center">
+            {/* monogram logo */}
+            <div className="flex items-center justify-center">
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img
+                src={withBasePath("/logo.png")}
+                alt={`${wedding.bride} & ${wedding.groom}`}
+                className="h-auto w-[clamp(64px,22cqw,120px)] md:w-[clamp(80px,16cqw,150px)]"
+                draggable={false}
+              />
             </div>
 
             <p className="max-w-[42ch] text-[clamp(0.92rem,4.3cqw,1.15rem)] leading-relaxed text-blush/90 md:max-w-[80ch] md:text-[clamp(1rem,2.2cqw,1.3rem)]">
