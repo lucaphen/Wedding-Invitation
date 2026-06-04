@@ -11,7 +11,7 @@ type Stage = "front" | "back" | "open";
 
 export default function Home() {
   const [stage, setStage] = useState<Stage>("front");
-  const [cardFace, setCardFace] = useState<"front" | "back">("back");
+  const [cardFace, setCardFace] = useState<"front" | "back">("front");
   const [showMap, setShowMap] = useState(false);
 
   const isOpen = stage === "open";
